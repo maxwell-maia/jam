@@ -3,4 +3,9 @@
 
 from command import hello
 
-print('Bot response:', hello(''))
+message = 'hi'
+
+print('Bot response:', hello(message))
+
+
+
