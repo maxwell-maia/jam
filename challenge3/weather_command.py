@@ -18,6 +18,11 @@ measurements = {
 def weather(message):
     message = message.lower()
 
+    if message != "":
+        city = message
+    elif message == "":
+        city = "galway"
+
     # Let's build the API call!
 
     # For challenge 3.1, you'll need to get the longitude and latitude for Galway
@@ -28,16 +33,24 @@ def weather(message):
 
     # 3.3 doesn't really introcude any new concepts. You're on your own!
 
-    date_now = (datetime.now() - timedelta(days=-1)).strftime('%Y-%m-%d')
+    date_now = (datetime.now() - timedelta(days=+1)).strftime('%Y-%m-%d')
     daily_params = ['temperature_2m_max', 'rain_sum', 'windspeed_10m_max']
     params = {
-        'latitude': 0,  # You need to update this
-        'longitude': 0, # ... and this
+        'latitude': city_coords[city][0],  # You need to update this
+        'longitude': city_coords[city][1], # ... and this
         'start_date': date_now,
         'end_date': date_now,
         'timezone': 'GMT',
         'daily': daily_params
     }
+
+    #3.1
+    #params.latitude = city_coords['galway'][0]
+    #params.longitude = city_coords['galway'][1]
+
+    #print(weather())
+    #print(city_coords['galway'][1])
+
 
     # This makes a request to the weather API with the above info.
     response = requests.get('https://api.open-meteo.com/v1/forecast', params=params).json()
@@ -46,5 +59,8 @@ def weather(message):
     # out the bits of information that are relevant to the command used.
     print(json.dumps(response, indent=4))
 
+    return "Yesterday, in " + city + ", the highest temperature recorded was " + str(response['daily']['temperature_2m_max'][0]) + " degrees celsius."
+
     # This is a placeholder response to show how to drill into the info that you're interested in.
-    return response['daily']['time'][0]
+    #return response['daily']['temperature_2m_max'][0]
+
